@@ -65,4 +65,8 @@ d) PostgreSQL/MySQL:
 
     If you prefer structured data like tables or relational mapping, relational databases like PostgreSQL or MySQL could also be an option. Both offer robust support for various queries, but this may be overkill for data that only needs to be stored temporarily.
 
+### Run Docker Image
+
+1. docker build -t <my-kubectl-python-image> .
+2. docker run --rm -p 5000:5000 my-kubectl-python-image
 
