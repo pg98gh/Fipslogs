@@ -87,26 +87,19 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Jinja2-Schleife, die durch die Nodes-Liste geht und die Tabelle dynamisch erstellt -->
+                {% for node in nodes %}
                 <tr>
-                    <td>node-1</td>
-                    <td>250m / 2vCPU</td>
-                    <td>1.2Gi / 8Gi</td>
-                    <td class="status-green">Healthy</td>
+                    <td>{{ node.name }}</td>
+                    <td>{{ node.cpu }}</td>
+                    <td>{{ node.memory }}</td>
+                    <td class="{% if node.status == 'Healthy' %}status-green{% else %}status-red{% endif %}">
+                        {{ node.status }}
+                    </td>
                 </tr>
-                <tr>
-                    <td>node-2</td>
-                    <td>180m / 2vCPU</td>
-                    <td>900Mi / 8Gi</td>
-                    <td class="status-green">Healthy</td>
-                </tr>
-                <tr>
-                    <td>node-3</td>
-                    <td>350m / 2vCPU</td>
-                    <td>2.3Gi / 8Gi</td>
-                    <td class="status-red">Unhealthy</td>
-                </tr>
+                {% endfor %}
             </tbody>
-        </table>
+        </table>        
     </section>
 
     <section id="pods" class="hidden">
@@ -114,33 +107,26 @@
         <table>
             <thead>
                 <tr>
-                    <th>Pod Name</th>
+                    <th>Node Name</th>
                     <th>CPU Usage</th>
                     <th>Memory Usage</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
+                <!-- Jinja2-Schleife, die durch die Nodes-Liste geht und die Tabelle dynamisch erstellt -->
+                {% for pod in pods %}
                 <tr>
-                    <td>web-app-1</td>
-                    <td>100m</td>
-                    <td>150Mi</td>
-                    <td class="status-green">Running</td>
+                    <td>{{ pod.name }}</td>
+                    <td>{{ pod.cpu }}</td>
+                    <td>{{ pod.memory }}</td>
+                    <td class="{% if pod.status == 'Healthy' %}status-green{% else %}status-red{% endif %}">
+                        {{ pod.status }}
+                    </td>
                 </tr>
-                <tr>
-                    <td>db-service-1</td>
-                    <td>50m</td>
-                    <td>200Mi</td>
-                    <td class="status-green">Running</td>
-                </tr>
-                <tr>
-                    <td>cache-1</td>
-                    <td>30m</td>
-                    <td>100Mi</td>
-                    <td class="status-green">Running</td>
-                </tr>
+                {% endfor %}
             </tbody>
-        </table>
+        </table>       
     </section>
 
     <section>

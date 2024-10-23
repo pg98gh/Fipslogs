@@ -32,9 +32,22 @@ def index():
         kubectl_describe_pod = output_lines[5]  # kubectl describe pod $pod -n $namespace
     if len(output_lines) > 6:
         kubectl_top_pods = output_lines[6]  # kubectl top pods -n $namespace
+    if len(output_lines) > 7:
+        kubectl_get_nodes = output_lines[7]
     namespace=['kube-system','azure','test','default'] # wird zu kubectl_get_namespaces
-    pods= ['pod1','pod2','pod3','pod4'] # wird zu kubectl_get_pods
-    return render_template('index.html', namespace=namespace)
+    pods= nodes = [
+        {'name': 'pod-1', 'cpu': '250m / 2vCPU', 'memory': '1.2Gi / 8Gi', 'status': 'Healthy'},
+        {'name': 'pod-2', 'cpu': '180m / 2vCPU', 'memory': '900Mi / 8Gi', 'status': 'Healthy'},
+        {'name': 'pod-3', 'cpu': '350m / 2vCPU', 'memory': '2.3Gi / 8Gi', 'status': 'Unhealthy'},
+        {'name': 'pod-4', 'cpu': '150m / 2vCPU', 'memory': '750Mi / 8Gi', 'status': 'Healthy'}
+    ] # wird zu kubectl_get_pods
+    nodes = [
+        {'name': 'node-1', 'cpu': '250m / 2vCPU', 'memory': '1.2Gi / 8Gi', 'status': 'Healthy'},
+        {'name': 'node-2', 'cpu': '180m / 2vCPU', 'memory': '900Mi / 8Gi', 'status': 'Healthy'},
+        {'name': 'node-3', 'cpu': '350m / 2vCPU', 'memory': '2.3Gi / 8Gi', 'status': 'Unhealthy'},
+        {'name': 'node-4', 'cpu': '150m / 2vCPU', 'memory': '750Mi / 8Gi', 'status': 'Healthy'}
+    ] # wird zu kubectl_get_nodes
+    return render_template('index.html', namespace=namespace,pods=pods,nodes=nodes)
 
 
     
