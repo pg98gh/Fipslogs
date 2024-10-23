@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kubernetes Monitoring Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        section {
+            margin: 20px 0;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .status-green {
+            color: green;
+        }
+        .status-red {
+            color: red;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Kubernetes Monitoring Dashboard</h1>
+        <p>Monitor CPU, Memory and Pod status in your K8s cluster.</p>
+    </header>
+
+    <section>
+        <h2>Node Overview</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Node Name</th>
+                    <th>CPU Usage</th>
+                    <th>Memory Usage</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>node-1</td>
+                    <td>250m / 2vCPU</td>
+                    <td>1.2Gi / 8Gi</td>
+                    <td class="status-green">Healthy</td>
+                </tr>
+                <tr>
+                    <td>node-2</td>
+                    <td>180m / 2vCPU</td>
+                    <td>900Mi / 8Gi</td>
+                    <td class="status-green">Healthy</td>
+                </tr>
+                <tr>
+                    <td>node-3</td>
+                    <td>350m / 2vCPU</td>
+                    <td>2.3Gi / 8Gi</td>
+                    <td class="status-red">Unhealthy</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Pod Overview (Namespace: default)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pod Name</th>
+                    <th>CPU Usage</th>
+                    <th>Memory Usage</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>web-app-1</td>
+                    <td>100m</td>
+                    <td>150Mi</td>
+                    <td class="status-green">Running</td>
+                </tr>
+                <tr>
+                    <td>db-service-1</td>
+                    <td>50m</td>
+                    <td>200Mi</td>
+                    <td class="status-green">Running</td>
+                </tr>
+                <tr>
+                    <td>cache-1</td>
+                    <td>30m</td>
+                    <td>100Mi</td>
+                    <td class="status-green">Running</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Quick Actions</h2>
+        <ul>
+            <li><a href="https://your-cluster-api-endpoint/api/v1/nodes">View Node Details</a></li>
+            <li><a href="https://your-cluster-api-endpoint/api/v1/namespaces/default/pods">View Pod Details</a></li>
+            <li><a href="https://your-grafana-url.com">Open Grafana Dashboard</a></li>
+            <li><a href="https://your-prometheus-url.com">Open Prometheus Metrics</a></li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>© 2024 Kubernetes Monitoring Dashboard | Powered by Fipslogs</p>
+    </footer>
+</body>
+</html>
