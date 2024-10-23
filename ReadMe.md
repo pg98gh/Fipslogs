@@ -67,6 +67,8 @@ d) PostgreSQL/MySQL:
 
 ### Run Docker Image
 
-1. docker build -t <my-kubectl-python-image> .
-2. docker run --rm -p 5000:5000 my-kubectl-python-image
+1. 
+    docker build -t <my-kubectl-python-image> .
+2. 
+    docker run --rm -p 5000:5000 my-kubectl-python-image
 
