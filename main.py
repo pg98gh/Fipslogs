@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template,request,url_for,jsonify
 from datetime import *
+import subprocess 
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
@@ -18,8 +19,26 @@ def login():
 
 @app.route("/index")
 def index():
+    process = subprocess.Popen(['bash', 'k8s_script.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    stdout, stderr = process.communicate()
+    output_lines = stdout.splitlines()
+    if len(output_lines) > 1:
+        kubectl_top_nodes = output_lines[1]  # kubectl top nodes
+    if len(output_lines) > 3:
+        kubectl_get_namespaces = output_lines[3]  # kubectl get namespaces
+    if len(output_lines) > 4:
+        kubectl_get_pods = output_lines[4]  # kubectl get pods -n $namespace -o wide
+    if len(output_lines) > 5:
+        kubectl_describe_pod = output_lines[5]  # kubectl describe pod $pod -n $namespace
+    if len(output_lines) > 6:
+        kubectl_top_pods = output_lines[6]  # kubectl top pods -n $namespace
+    namespace=['kube-system','azure','test','default'] # wird zu kubectl_get_namespaces
+    pods= ['pod1','pod2','pod3','pod4'] # wird zu kubectl_get_pods
+    return render_template('index.html', namespace=namespace)
+
+
     
-    return render_template('index.html')
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)

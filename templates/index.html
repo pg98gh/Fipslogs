@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kubernetes Monitoring Dashboard</title>
+    <title>Fipslogs - A Kubernetes Monitoring Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,6 +48,10 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -55,9 +59,24 @@
         <h1>Kubernetes Monitoring Dashboard</h1>
         <p>Monitor CPU, Memory and Pod status in your K8s cluster.</p>
     </header>
+    <!--
+    first run in backend kubectl get namespaces and put result in dropdown to select namespace. Nodes of selected namespace should be shown as below. Also pods of namespace
+    should be shown as default below. Add also yaml output of pod, when hovering over pod name and beneath more selection fields for k8s ressources 
+    -->
+    <h3>Select a Namespace</h3>
+    <form action="/submit" method="post">
+        <label for="namespace">Choose a Namespace:</label>
+        <select id="namespace" name="namespace">
+            <!-- Durchläuft die Liste der Früchte und erstellt für jede ein <option> -->
+            {% for name in namespace %}
+                <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
 
-    <section>
-        <h2>Node Overview</h2>
+    <section id="nodes" class="hidden">
+        <h2>Node Overview of Cluster</h2>
         <table>
             <thead>
                 <tr>
@@ -90,7 +109,7 @@
         </table>
     </section>
 
-    <section>
+    <section id="pods" class="hidden">
         <h2>Pod Overview (Namespace: default)</h2>
         <table>
             <thead>
@@ -137,5 +156,6 @@
     <footer>
         <p>© 2024 Kubernetes Monitoring Dashboard | Powered by Fipslogs</p>
     </footer>
+    <script src="{{ url_for('static', filename='js/unhide.js') }}"></script>
 </body>
 </html>

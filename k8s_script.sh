@@ -12,3 +12,5 @@ echo kubectl get pods -n $namespace -o wide
 echo kubectl describe pod $pod -n $namespace
 
 echo kubectl top pods -n $namespace
+
+echo "Script finished!!"
