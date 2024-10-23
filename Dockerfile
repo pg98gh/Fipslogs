@@ -21,6 +21,10 @@ COPY main.py /app/main.py
 # Kopiere das Bash-Skript in den Container (falls du eines hast)
 COPY k8s_script.sh /app/k8s_script.sh
 
+# Kopiere die Verzeichnisse templates und static in den Container
+COPY templates /app/templates
+COPY static /app/static
+
 # Gib das Arbeitsverzeichnis an
 WORKDIR /app
 
