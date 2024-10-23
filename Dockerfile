@@ -32,5 +32,6 @@ RUN chmod +x /app/k8s_script.sh
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+EXPOSE 5000
 # Standardbefehl: Ausführen von main.py
 CMD ["python", "main.py"]
