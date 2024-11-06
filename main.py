@@ -113,17 +113,25 @@ def getPods(namespace:str) -> List[str]:
     #pods= pod_query.stdout.strip.split()
     return pod_query
 
+# add a loop which iterates over getPods and insert for each iteration the pod name
+def getPodLogs(podName: str, namespace: str) -> List[str]:
+    log_query = subprocess.run(['echo', 'logs', podName, '-n', namespace], check=True, text=True) # run kubectl logs --> returns logs of pod
+    print (log_query.stdout, type(log_query.stdout), "inside get pod method")
+    #logs= log_query.stdout.strip.split()
+    return log_query
+
 def getNodes() -> List[str]:
     node_query = subprocess.run(['echo', 'get', 'nodes' '-o', 'wide'], check=True, text=True) # run kubectl get nodes --> returns nodes with name, status, roles, age, version, internal-ip, external-ip
     print (node_query.stdout, type(node_query.stdout), "inside get pod method")
-    #nodes= pod_query.stdout.strip.split()
+    #nodes= node_query.stdout.strip.split()
     return node_query
 
 def topNodes() -> List[str]:
     top_query = subprocess.run(['echo', 'top', 'nodes'], check=True, text=True) # run kubectl top nodes --> returns name, CPU(cores),CPU%, Memory(bytes), Memory%
     print (top_query.stdout, type(top_query.stdout), "inside get pod method")
-    #tops= pod_query.stdout.strip.split()
+    #tops= top_query.stdout.strip.split()
     return top_query
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)
