@@ -19,8 +19,7 @@ def login():
 
 @app.route("/index", methods=['POST','GET'])
 def index():
-    process = subprocess.run(['echo', 'HELLO', 'WORLD'], check=True, text=True) # run kubectl get namespaces
-    print (process)
+    getNamespaces()
     namespaces=['kube-system','azure','test','default'] #get all namespaces from given cluster
     return render_template('index.html', namespaces=namespaces)
 
@@ -28,8 +27,8 @@ def index():
 def namespaceData():
     selected_namespace = request.form.get('namespace')
     print("Selected namespace:", selected_namespace)
-
-    # Mock data - in a real setup, this would be dynamically generated
+    getPods(selected_namespace)
+    # Mock data - will be generated/passed by kubectl
     pods = [
         {'name': 'pod-1', 'cpu': '250m / 2vCPU', 'memory': '1.2Gi / 8Gi', 'status': 'Healthy'},
         {'name': 'pod-2', 'cpu': '150m / 2vCPU', 'memory': '1.2Gi / 8Gi', 'status': 'Unhealthy'},
@@ -101,6 +100,30 @@ def namespaceData():
 
     return jsonify(nodesHTML=nodes_html, podsHTML=pods_html)
 
-    
+from typing import List
+def getNamespaces() -> List[str] :
+    namespace_query = subprocess.run(['echo', 'get', 'namespaces'], check=True, text=True) # run kubectl get namespaces --> returns namespaces
+    print (namespace_query.stdout, type(namespace_query.stdout), "inside get ns method")
+    #namespaces= namespace_query.stdout.strip.split()
+    return namespace_query #namespaces 
+
+def getPods(namespace:str) -> List[str]:
+    pod_query = subprocess.run(['echo', 'get', 'pods', '-n', namespace, '-o', 'wide'], check=True, text=True) # run kubectl get pods --> returns pods
+    print (pod_query.stdout, type(pod_query.stdout), "inside get pod method")
+    #pods= pod_query.stdout.strip.split()
+    return pod_query
+
+def getNodes() -> List[str]:
+    node_query = subprocess.run(['echo', 'get', 'nodes' '-o', 'wide'], check=True, text=True) # run kubectl get nodes --> returns nodes with name, status, roles, age, version, internal-ip, external-ip
+    print (node_query.stdout, type(node_query.stdout), "inside get pod method")
+    #nodes= pod_query.stdout.strip.split()
+    return node_query
+
+def topNodes() -> List[str]:
+    top_query = subprocess.run(['echo', 'top', 'nodes'], check=True, text=True) # run kubectl top nodes --> returns name, CPU(cores),CPU%, Memory(bytes), Memory%
+    print (top_query.stdout, type(top_query.stdout), "inside get pod method")
+    #tops= pod_query.stdout.strip.split()
+    return top_query
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)
