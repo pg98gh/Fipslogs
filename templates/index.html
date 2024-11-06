@@ -64,17 +64,16 @@
     should be shown as default below. Add also yaml output of pod, when hovering over pod name and beneath more selection fields for k8s ressources 
     -->
     <h3>Select a Namespace</h3>
-    <form action="/submit" method="post">
+    <form id="namespaceForm" action="{{ url_for('namespaceData') }}" method="POST">
         <label for="namespace">Choose a Namespace:</label>
         <select id="namespace" name="namespace">
-            <!-- Durchläuft die Liste der Früchte und erstellt für jede ein <option> -->
-            {% for name in namespace %}
+            {% for name in namespaces %}
                 <option value="{{ name }}">{{ name }}</option>
             {% endfor %}
         </select>
         <input type="submit" value="Submit">
     </form>
-
+    
     <section id="nodes" class="hidden">
         <h2>Node Overview of Cluster</h2>
         <table>
@@ -87,7 +86,6 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Jinja2-Schleife, die durch die Nodes-Liste geht und die Tabelle dynamisch erstellt -->
                 {% for node in nodes %}
                 <tr>
                     <td>{{ node.name }}</td>
@@ -107,14 +105,13 @@
         <table>
             <thead>
                 <tr>
-                    <th>Node Name</th>
+                    <th>Pod Name</th>
                     <th>CPU Usage</th>
                     <th>Memory Usage</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Jinja2-Schleife, die durch die Nodes-Liste geht und die Tabelle dynamisch erstellt -->
                 {% for pod in pods %}
                 <tr>
                     <td>{{ pod.name }}</td>
