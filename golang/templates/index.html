@@ -73,6 +73,59 @@
         </select>
         <button type="submit">Submit</button>
     </form>
+
+    <section id="nodes">
+        <h2>Node Overview of Cluster</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Node Name</th>
+                    <th>CPU Usage</th>
+                    <th>Memory Usage</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Nodes}}
+                <tr>
+                    <td>{{.Name}}</td>
+                    <td>{{.CPU}}</td>
+                    <td>{{.Memory}}</td>
+                    <td class="{{if eq .Status "Healthy"}}status-green{{else}}status-red{{end}}">
+                        {{.Status}}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>        
+    </section>
+    
+    <section id="pods">
+        <h2>Pod Overview (Namespace: {{.SelectedNamespace}})</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pod Name</th>
+                    <th>CPU Usage</th>
+                    <th>Memory Usage</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Pods}}
+                <tr>
+                    <td>{{.Name}}</td>
+                    <td>{{.CPU}}</td>
+                    <td>{{.Memory}}</td>
+                    <td class="{{if eq .Status "Healthy"}}status-green{{else}}status-red{{end}}">
+                        {{.Status}}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>       
+    </section>
+    
     
     
     <section>

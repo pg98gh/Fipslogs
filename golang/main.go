@@ -11,28 +11,63 @@ import(
 type PageData struct {
     Namespaces []string
     SelectedNamespace string
+    Nodes []Node
+	Pods  []Pod
 }
+
+type Node struct{
+    Name   string
+	CPU    string
+	Memory string
+	Status string
+}
+
+type Pod struct {
+	Name   string
+	CPU    string
+	Memory string
+	Status string
+}
+
 
 func main() {
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        namespaces := []string {"kube-system","azure","test","default"}
+        namespaces := []string {"kube-system","azure","test","default"} //cmdNamespaces()
         selectedNamespace := ""
 		if r.Method == http.MethodPost {
 			selectedNamespace = r.FormValue("namespace")
+            log.Printf("Selected Namespace: %s\n", selectedNamespace)
+		}
+        
+        //dummy data will be replaced by methods below
+        nodes := []Node{
+			{"node1", "70%", "2.5Gi", "Healthy"},
+			{"node2", "80%", "3.0Gi", "Unhealthy"},
+            {"node3", "50%", "2.5Gi", "Healthy"},
+			{"node4", "90%", "1.0Gi", "Healthy"},
+		}
+
+		pods := []Pod{
+			{"pod1", "50%", "1.0Gi", "Healthy"},
+			{"pod2", "90%", "1.5Gi", "Unhealthy"},
+            {"pod3", "50%", "1.0Gi", "Healthy"},
+			{"pod4", "90%", "2.5Gi", "Healthy"},
 		}
 
 		data := PageData{
 			Namespaces:      namespaces,
 			SelectedNamespace: selectedNamespace,
+            Nodes: nodes,
+			Pods: pods,
 		}
 
 		tmpl := template.Must(template.ParseFiles("templates/index.html"))
 		tmpl.Execute(w, data)
 
-        log.Printf("Selected Namespace: %s\n", selectedNamespace)
+        
     })
-
+    log.Println("Server läuft auf http://localhost:8080")
     http.ListenAndServe(":8080", nil)
 }
 
