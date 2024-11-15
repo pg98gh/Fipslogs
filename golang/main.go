@@ -5,45 +5,71 @@ import(
 	//"time"
 	"html/template"
 	"log"
+    "os/exec" //use this as it is easier/faster for easy kubecdtl get cmds
+    "strings"
 )
 type PageData struct {
     Namespaces []string
+    SelectedNamespace string
 }
 
 func main() {
-    namespaces := []string {"kube-system","azure","test","default"}
 
     http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        tmpl, err := template.ParseFiles("templates/index.html")
-        if err != nil {
-            http.Error(w, "Unable to load template", http.StatusInternalServerError)
-            return
-        }
-        data := PageData{
-            Namespaces: namespaces,
-        }
+        namespaces := []string {"kube-system","azure","test","default"}
+        selectedNamespace := ""
+		if r.Method == http.MethodPost {
+			selectedNamespace = r.FormValue("namespace")
+		}
 
-        err = tmpl.Execute(w, data)
-        if err != nil {
-            http.Error(w, "Failed to render template", http.StatusInternalServerError)
-        }
-    })
-    // submit handler for "Select Namespace" form
-    http.HandleFunc("/submit", func(w http.ResponseWriter, r *http.Request) {
-        if r.Method != http.MethodPost {
-            http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
-            return
-        }
+		data := PageData{
+			Namespaces:      namespaces,
+			SelectedNamespace: selectedNamespace,
+		}
 
-        
-        selectedNamespace := r.FormValue("namespace")
+		tmpl := template.Must(template.ParseFiles("templates/index.html"))
+		tmpl.Execute(w, data)
+
         log.Printf("Selected Namespace: %s\n", selectedNamespace)
-
-        //answer to user
-        w.Write([]byte("You chose: " + selectedNamespace))
     })
 
-
-    log.Println("Server läuft auf http://localhost:8080")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    http.ListenAndServe(":8080", nil)
 }
+
+//outsource to other file
+func cmdNamespace() []string{
+    log.Printf("Running get Namespace Method")
+    cmd := exec.Command("kubectl","get","namespaces")
+    output,_ := cmd.CombinedOutput() //err is ignored by _
+	namespaces := strings.Split(strings.TrimSpace(string(output)), "\n")
+	return namespaces
+}
+
+func podCmd(namespace string) []string{
+    cmd := exec.Command("kubectl","get","pods","-n",namespace)
+    output, _ := cmd.CombinedOutput()
+    pods := strings.Split(strings.TrimSpace(string(output)), "\n")
+    return pods
+}
+
+func logsCmd(namespace string) string{
+    cmd:= exec.Command("kubectl","logs","pods","-n",namespace)
+    output, _ := cmd.CombinedOutput()
+    return string(output)
+}
+
+func nodesCmd() []string{
+    cmd:= exec.Command("kubectl","get","nodes")
+    output, _ := cmd.CombinedOutput()
+    nodes := strings.Split(strings.TrimSpace(string(output)), "\n")
+    return nodes
+}
+
+func topCmd() []string{
+    cmd := exec.Command("kubectl", "top", "nodes")
+    output, _ := cmd.CombinedOutput()
+    top := strings.Split(strings.TrimSpace(string(output)), "\n")
+    return top
+}
+
+

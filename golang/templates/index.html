@@ -64,11 +64,11 @@
     should be shown as default below. Add also yaml output of pod, when hovering over pod name and beneath more selection fields for k8s ressources 
     -->
     <h1>Select a Namespace</h1>
-    <form action="/submit" method="post">
+    <form action="/" method="post" id="namespaceForm">
         <label for="namespace">Select Namespace:</label>
         <select name="namespace" id="namespace">
             {{range .Namespaces}}
-                <option value="{{.}}">{{.}}</option>
+                <option value="{{.}}" {{if eq . $.SelectedNamespace}}selected{{end}}>{{.}}</option>
             {{end}}
         </select>
         <button type="submit">Submit</button>
@@ -88,5 +88,6 @@
     <footer>
         <p>© 2024 Kubernetes Monitoring Dashboard | Powered by Fipslogs</p>
     </footer>
+    <script src="/static/js/unhide.js"></script>
 </body>
 </html>
