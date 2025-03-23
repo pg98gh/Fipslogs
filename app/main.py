@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template,request,url_for,jsonify,render_template_string
 from datetime import *
 import subprocess 
+
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])
@@ -131,7 +132,3 @@ def topNodes() -> List[str]:
     print (top_query.stdout, type(top_query.stdout), "inside get pod method")
     #tops= top_query.stdout.strip.split()
     return top_query
-
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000,debug=True)
