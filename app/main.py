@@ -1,7 +1,6 @@
 from flask import Flask, redirect, render_template,request,url_for,jsonify,render_template_string
 from datetime import *
 import subprocess 
-
 app = Flask(__name__)
 
 @app.route("/", methods=['GET', 'POST'])

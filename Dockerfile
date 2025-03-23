@@ -38,4 +38,4 @@ RUN pip install -r requirements.txt
 
 EXPOSE 5000
 # Standardbefehl: Ausführen von main.py
-CMD ["python", "main.py"]
+CMD ["python", "run.py"]
