@@ -1,0 +1,10 @@
+apiVersion: v2
+name: Fipslogs
+# Chart version
+version: 0.1.0
+type: Application
+description: ML-based Flask service for monitoring a k8s cluster
+# Fipslogs Version
+appVersion: "1.0"
+maintainers:
+  - name: pg98gh
